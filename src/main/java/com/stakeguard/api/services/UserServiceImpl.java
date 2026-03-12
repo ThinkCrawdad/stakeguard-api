@@ -55,4 +55,30 @@ public class UserServiceImpl implements UserService {
         user.setTrustScore(score);
         userRepository.save(user);
     }
+
+    @Override
+    public List<Bet> getUserBets(Long userId) {
+        return betRepository.findAllByUserId(userId);
+    }
+
+    @Override
+    public User registerUser(com.stakeguard.api.dto.UserRegistrationDTO userRegistrationDTO) {
+        if (userRepository.existsByUsername(userRegistrationDTO.getUsername())) {
+            throw new IllegalArgumentException("Username already exists");
+        }
+
+        if (userRepository.existsByEmail(userRegistrationDTO.getEmail())) {
+            throw new IllegalArgumentException("Email already exists");
+        }
+
+        User user = new User();
+        user.setUsername(userRegistrationDTO.getUsername());
+        user.setEmail(userRegistrationDTO.getEmail());
+        // In a real application, you would hash the password before saving
+        // user.setPassword(passwordEncoder.encode(userRegistrationDTO.getPassword()));
+        user.setTrustScore(50.0);
+        user.setPremium(false);
+
+        return userRepository.save(user);
+    }
 }
