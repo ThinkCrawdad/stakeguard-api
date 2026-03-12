@@ -1,0 +1,26 @@
+# Java / Maven
+target/
+*.jar
+*.war
+
+# Angular
+/frontend-web/node_modules/
+/frontend-web/dist/
+.angular/
+
+# Flutter / Dart
+/mobile-app/.dart_tool/
+/mobile-app/build/
+/mobile-app/.packages
+/mobile-app/.pub-cache/
+/mobile-app/.pub/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
