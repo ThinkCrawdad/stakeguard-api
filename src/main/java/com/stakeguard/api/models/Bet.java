@@ -28,6 +28,8 @@ public class Bet {
 
     private LocalDateTime timestampCreated = LocalDateTime.now();
 
+    private LocalDateTime eventStartTime;
+
     @ManyToOne
     private User user;
 }
