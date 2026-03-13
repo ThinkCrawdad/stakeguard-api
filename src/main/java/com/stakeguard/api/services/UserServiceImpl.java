@@ -81,4 +81,34 @@ public class UserServiceImpl implements UserService {
 
         return userRepository.save(user);
     }
+
+    @Override
+    public com.stakeguard.api.dto.UserStatsDTO getUserStats(Long userId) {
+        User user = getUserById(userId);
+        List<Bet> bets = betRepository.findByUser(user);
+
+        long totalPicks = bets.size();
+        long wonPicks = bets.stream().filter(bet -> "WON".equals(bet.getStatus())).count();
+        double winRate = totalPicks > 0 ? ((double) wonPicks / totalPicks) * 100 : 0;
+
+        double totalStaked = bets.stream().mapToDouble(Bet::getStake).sum();
+        double netReturn = 0;
+
+        for (Bet bet : bets) {
+            if ("WON".equals(bet.getStatus())) {
+                netReturn += bet.getStake() * (bet.getOdds() - 1);
+            } else if ("LOST".equals(bet.getStatus())) {
+                netReturn -= bet.getStake();
+            }
+        }
+
+        double yield = totalStaked > 0 ? (netReturn / totalStaked) * 100 : 0;
+
+        return com.stakeguard.api.dto.UserStatsDTO.builder()
+                .totalPicks(totalPicks)
+                .winRate(winRate)
+                .yield(yield)
+                .profit(netReturn)
+                .build();
+    }
 }

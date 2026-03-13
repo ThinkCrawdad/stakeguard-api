@@ -38,4 +38,9 @@ public class UserController {
     public List<Bet> getUserHistory(@PathVariable Long id) {
         return userService.getUserBets(id);
     }
+
+    @GetMapping("/{id}/stats")
+    public com.stakeguard.api.dto.UserStatsDTO getUserStats(@PathVariable Long id) {
+        return userService.getUserStats(id);
+    }
 }

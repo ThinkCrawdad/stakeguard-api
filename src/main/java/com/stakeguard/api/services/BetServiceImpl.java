@@ -1,5 +1,6 @@
 package com.stakeguard.api.services;
 
+import com.stakeguard.api.exceptions.IllegalActionException;
 import com.stakeguard.api.models.Bet;
 import com.stakeguard.api.models.User;
 import com.stakeguard.api.repositories.BetRepository;
@@ -22,7 +23,7 @@ public class BetServiceImpl implements BetService {
     @Override
     public Bet placeBet(Long userId, Bet bet) {
         if (bet.getEventStartTime().isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("Cannot place bet after event has started");
+            throw new IllegalActionException("No se pueden registrar apuestas de eventos que ya han comenzado");
         }
 
         User user = userRepository.findById(userId)

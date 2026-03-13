@@ -1,5 +1,6 @@
 package com.stakeguard.api.services;
 
+import com.stakeguard.api.exceptions.IllegalActionException;
 import com.stakeguard.api.models.Bet;
 import com.stakeguard.api.repositories.BetRepository;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,7 @@ public class AuditServiceImpl implements AuditService {
                 .orElseThrow(() -> new IllegalArgumentException("Bet not found"));
 
         if (!"PENDING".equals(bet.getStatus())) {
-            throw new IllegalStateException("Bet has already been resolved");
+            throw new IllegalActionException("La apuesta ya ha sido resuelta y no puede ser modificada.");
         }
 
         if (!"WON".equals(finalStatus) && !"LOST".equals(finalStatus)) {
