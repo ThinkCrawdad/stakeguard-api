@@ -38,7 +38,10 @@ public class UserServiceImpl implements UserService {
             totalStaked += bet.getStake();
             if ("WON".equals(bet.getStatus())) {
                 score += 2.0;
-                netReturn += bet.getStake() * (bet.getOdds() - 1);
+                if (bet.getSelections().size() > 1) {
+                    score += (bet.getSelections().size() - 1) * 0.5;
+                }
+                netReturn += bet.getStake() * (bet.getTotalOdds() - 1);
             } else if ("LOST".equals(bet.getStatus())) {
                 score -= 3.0;
                 netReturn -= bet.getStake();
@@ -96,7 +99,7 @@ public class UserServiceImpl implements UserService {
 
         for (Bet bet : bets) {
             if ("WON".equals(bet.getStatus())) {
-                netReturn += bet.getStake() * (bet.getOdds() - 1);
+                netReturn += bet.getStake() * (bet.getTotalOdds() - 1);
             } else if ("LOST".equals(bet.getStatus())) {
                 netReturn -= bet.getStake();
             }
