@@ -18,13 +18,12 @@ public class Selection {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String matchId;
+    @ManyToOne
+    private Fixture fixture;
 
     private Double odds;
 
     private String status; // PENDING, WON, LOST
-
-    private LocalDateTime eventStartTime;
 
     @ManyToOne
     private Bet bet;
