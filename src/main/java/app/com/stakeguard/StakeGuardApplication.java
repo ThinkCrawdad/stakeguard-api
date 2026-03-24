@@ -1,4 +1,4 @@
-package app.stakeguard;
+package app.com.stakeguard;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
