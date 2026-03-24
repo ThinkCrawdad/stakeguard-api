@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: stakeguard-api
+  
+  # Configuración de la Base de Datos (Docker)
+  datasource:
+    url: jdbc:postgresql://localhost:5433/stakeguard_db
+    username: elias_dev
+    password: stake_password_2026
+    driver-class-name: org.postgresql.Driver
+
+  # Configuración de Hibernate / JPA
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update # Crea las tablas automáticamente al detectar tus clases @Entity
+    show-sql: true     # Muestra las consultas en la consola (útil para debug)
+    properties:
+      hibernate:
+        format_sql: true
+  web:
+    error:
+      include-message: always # Útil para ver qué falló en los JSON de error
+
+# Configuración del servidor
+server:
+  port: 8080
