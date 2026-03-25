@@ -1,7 +1,9 @@
 package app.com.stakeguard.service;
 
+import app.com.stakeguard.entity.CompraPick;
 import app.com.stakeguard.entity.Pick;
 import app.com.stakeguard.enums.StatusPick;
+import app.com.stakeguard.repository.CompraPickRepository;
 import app.com.stakeguard.repository.PickRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,11 +14,13 @@ import java.util.List;
 public class PickService {
 
     private final PickRepository repository;
+    private final CompraPickRepository compraPickRepository;
 
     // 👇 ESTE ES EL CONSTRUCTOR QUE FALTA 👇
     // Spring Boot verá esto y automáticamente le pasará el repositorio real
-    public PickService(PickRepository repository) {
+    public PickService(PickRepository repository, CompraPickRepository compraPickRepository) {
         this.repository = repository;
+        this.compraPickRepository = compraPickRepository;
     }
 
     @Transactional
@@ -97,7 +101,16 @@ public class PickService {
 
         // Si sobrevive a las validaciones, significa que es seguro pagarle al Tipster
         // Aquí luego conectarás la lógica para liberar el saldo a la wallet del Tipster
+        // 1. Buscas todas las compras de este pick
+        List<CompraPick> compras = compraPickRepository.findByPickId(id);
 
+        // 2. Liberas los fondos para el Tipster
+        for (CompraPick compra : compras) {
+            compra.setStatusPago(StatusPick.LIQUIDADO);
+            compraPickRepository.save(compra);
+        }
+
+        // 3. (Futuro) Le sumas el saldo al "Wallet" del Tipster
         // Podríamos crear un status "LIQUIDADO" en el Enum, pero por ahora devolvemos
         // el pick
         return pick;

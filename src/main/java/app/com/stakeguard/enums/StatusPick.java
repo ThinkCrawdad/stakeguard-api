@@ -6,5 +6,6 @@ public enum StatusPick {
     ROJO,
     DISPUTADO,
     REEMBOLSADO,
-    LIQUIDADO
+    LIQUIDADO,
+    RETENIDO
 }

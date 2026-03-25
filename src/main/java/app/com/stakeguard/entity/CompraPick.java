@@ -3,6 +3,8 @@ package app.com.stakeguard.entity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import app.com.stakeguard.enums.StatusPick;
+
 @Entity
 @Table(name = "compras_picks")
 public class CompraPick {
@@ -19,7 +21,13 @@ public class CompraPick {
     @JoinColumn(name = "cliente_id")
     private Usuario cliente;
 
+    @Column(nullable = false)
     private Double montoPagado;
+
+    private LocalDateTime fechaCompra = LocalDateTime.now();
+
+    @Enumerated(EnumType.STRING)
+    private StatusPick statusPago = StatusPick.RETENIDO;
 
     public Long getId() {
         return id;
@@ -61,19 +69,14 @@ public class CompraPick {
         this.fechaCompra = fechaCompra;
     }
 
-    public String getStatusPago() {
+    public StatusPick getStatusPago() {
         return statusPago;
     }
 
-    public void setStatusPago(String statusPago) {
+    public void setStatusPago(StatusPick statusPago) {
         this.statusPago = statusPago;
     }
 
-    private LocalDateTime fechaCompra = LocalDateTime.now();
-
-    // Fundamental para tu modelo híbrido: Si el Tipster pierde la disputa,
-    // este status cambia a "REEMBOLSADO" y le devuelves el dinero al cliente.
-    private String statusPago = "COMPLETADO"; // COMPLETADO, REEMBOLSADO
-
-    // GETTERS Y SETTERS AQUÍ...
+    public CompraPick() {
+    }
 }
