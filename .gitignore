@@ -30,7 +30,3 @@ Icon
 # --- Log files ---
 *.log
 logs/
-
-# --- Configuración sensible ---
-# Descomenta esto si vas a meter contraseñas reales en lugar de variables de entorno
-# src/main/resources/application.properties
