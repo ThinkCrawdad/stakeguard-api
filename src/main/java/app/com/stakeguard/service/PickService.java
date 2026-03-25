@@ -2,6 +2,7 @@ package app.com.stakeguard.service;
 
 import app.com.stakeguard.entity.CompraPick;
 import app.com.stakeguard.entity.Pick;
+import app.com.stakeguard.entity.Seleccion;
 import app.com.stakeguard.enums.StatusPick;
 import app.com.stakeguard.repository.CompraPickRepository;
 import app.com.stakeguard.repository.PickRepository;
@@ -65,10 +66,16 @@ public class PickService {
         return repository.save(pick);
     }
 
+    @Transactional
     public Pick crearPick(Pick pick) {
-        if (pick == null) {
-            throw new IllegalArgumentException("El Pick no puede ser nulo");
+        pick.setEstado(StatusPick.PENDIENTE);
+
+        if (pick.getSelecciones() != null && !pick.getSelecciones().isEmpty()) {
+            for (Seleccion seleccion : pick.getSelecciones()) {
+                seleccion.setPick(pick);
+            }
         }
+
         return repository.save(pick);
     }
 

@@ -14,4 +14,6 @@ public interface PickRepository extends JpaRepository<Pick, Long> {
     List<Pick> findByEstado(StatusPick estado);
 
     List<Pick> findByDeporte(String deporte);
+
+    List<Pick> findByTipsterId(Long tipsterId);
 }

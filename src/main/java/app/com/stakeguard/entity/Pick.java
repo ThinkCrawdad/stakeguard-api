@@ -3,6 +3,10 @@ package app.com.stakeguard.entity;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import app.com.stakeguard.enums.StatusPick;
 
@@ -12,26 +16,46 @@ public class Pick {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String evento;
-    private String prediccion;
+    private String titulo;
     private Double momio;
     private Double stake;
-
     @Enumerated(EnumType.STRING)
     private StatusPick estado = StatusPick.PENDIENTE;
-
     private LocalDateTime fechaCreacion = LocalDateTime.now();
     private LocalDateTime fechaResultado;
     private LocalDateTime fechaExpiracionDisputa;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipster_id")
+    @JsonIgnoreProperties({ "hibernateLazyInitializer", "handler" })
     private Usuario tipster;
-
     private String deporte;
     private String liga;
     private Double precio;
+    private String casaApuestas;
+    @Column(length = 1000)
+    private String imageUrl;
+    @OneToMany(mappedBy = "pick", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Seleccion> selecciones = new ArrayList<>();
+
+    public Pick() {
+    }
+
+    /* -- Getters and Setters -- */
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
+    }
+
+    public String getCasaApuestas() {
+        return casaApuestas;
+    }
+
+    public void setCasaApuestas(String casaApuestas) {
+        this.casaApuestas = casaApuestas;
+    }
 
     public Usuario getTipster() {
         return tipster;
@@ -84,22 +108,6 @@ public class Pick {
         this.id = id;
     }
 
-    public String getEvento() {
-        return evento;
-    }
-
-    public void setEvento(String evento) {
-        this.evento = evento;
-    }
-
-    public String getPrediccion() {
-        return prediccion;
-    }
-
-    public void setPrediccion(String prediccion) {
-        this.prediccion = prediccion;
-    }
-
     public Double getMomio() {
         return momio;
     }
@@ -147,4 +155,24 @@ public class Pick {
     public void setFechaExpiracionDisputa(LocalDateTime fechaExpiracionDisputa) {
         this.fechaExpiracionDisputa = fechaExpiracionDisputa;
     }
+
+    public void setSelecciones(java.util.List<Seleccion> selecciones) {
+        this.selecciones = selecciones;
+        for (Seleccion s : selecciones) {
+            s.setPick(this);
+        }
+    }
+
+    public List<Seleccion> getSelecciones() {
+        return selecciones;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public void setImageUrl(String imageUrl) {
+        this.imageUrl = imageUrl;
+    }
+
 }
